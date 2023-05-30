@@ -12,12 +12,12 @@ function Figure({ figure, startPosition, type, board, setBoard, id, counterWhite
 
         if (counterWhite === counterBlack && id[0] === 'w'){
             setCounterWhite(counterWhite + 1);
-            setStepsWhite([...stepsWhite, id[1] + String.fromCharCode('h'.charCodeAt(0) - yNew) + (xNew+1)]);
+            setStepsWhite([...stepsWhite, id[1] + ((board[xNew][yNew] === '') ? '' : 'x') + String.fromCharCode('h'.charCodeAt(0) - yNew) + (xNew+1)]);
         }
 
         if (counterWhite === counterBlack+1 && id[0] === 'b'){
             setCounterBlack(counterBlack + 1);
-            setStepsBlack([...stepsBlack, id[1] + String.fromCharCode('h'.charCodeAt(0) - yNew) + (xNew+1)]);
+            setStepsBlack([...stepsBlack, id[1] + ((board[xNew][yNew] === '') ? '' : 'x') + String.fromCharCode('h'.charCodeAt(0) - yNew) + (xNew+1)]);
         }
 
         console.log(board[xNew][yNew])
@@ -215,7 +215,7 @@ function Figure({ figure, startPosition, type, board, setBoard, id, counterWhite
                 } else if (board[xNew][yNew][0] === 'b' && xNew-x === 1 && Math.abs(yNew-y)===1){
                     setX(xNew);
                     setY(yNew);
-                    setStepsWhite([...stepsWhite, id[1] + 'x' +String.fromCharCode('h'.charCodeAt(0) - yNew) + (xNew+1)]);
+                    // setStepsWhite([...stepsWhite, id[1] + 'x' +String.fromCharCode('h'.charCodeAt(0) - yNew) + (xNew+1)]);
                     refreshBoard(xPrev, yPrev, xNew, yNew);
                 }
                 break;
@@ -229,8 +229,8 @@ function Figure({ figure, startPosition, type, board, setBoard, id, counterWhite
                     refreshBoard(xPrev, yPrev, xNew, yNew);
                 }else if (board[xNew][yNew][0] === 'w' && xNew-x === -1 && Math.abs(yNew-y)===1){
                     setX(xNew);
-                    setStepsBlack([...stepsBlack, id[1] + String.fromCharCode('h'.charCodeAt(0) - yNew) + (xNew+1)]);
                     setY(yNew);
+                    // setStepsBlack([...stepsBlack, id[1] + String.fromCharCode('h'.charCodeAt(0) - yNew) + (xNew+1)]);
                     refreshBoard(xPrev, yPrev, xNew, yNew);
                 }
                 break;
