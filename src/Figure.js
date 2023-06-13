@@ -1,9 +1,17 @@
 import React, { useEffect, useState } from 'react';
 
-function Figure({ figure, startPosition, type, board, setBoard, id, counterWhite, setCounterWhite, counterBlack, setCounterBlack,  stepsWhite, setStepsWhite, stepsBlack, setStepsBlack}){
+function Figure({ figure, startPosition, type, board, setBoard, id, counterWhite, setCounterWhite, counterBlack, setCounterBlack,  stepsWhite, setStepsWhite, stepsBlack, setStepsBlack, pointsWhite, setPointsWhite, pointsBlack, setPointsBlack}){
     const [x, setX] = useState(startPosition[0]);
     const [y, setY] = useState(startPosition[1]);
     const [isHidden, setIsHidden] = useState(false);
+
+    const points = {
+        'p':1,
+        'n':3,
+        'b':3,
+        'q':8,
+        'r':5
+    } 
 
     const refreshBoard = (xPrev, yPrev, xNew, yNew) => {
         console.log([xPrev, yPrev, xNew, yNew]);
@@ -13,11 +21,25 @@ function Figure({ figure, startPosition, type, board, setBoard, id, counterWhite
         if (counterWhite === counterBlack && id[0] === 'w'){
             setCounterWhite(counterWhite + 1);
             setStepsWhite([...stepsWhite, id[1] + ((board[xNew][yNew] === '') ? '' : 'x') + String.fromCharCode('h'.charCodeAt(0) - yNew) + (xNew+1)]);
+            if (board[xNew][yNew] === 'bk'){
+                alert("White wins!");
+                window.location.reload(false);
+            }
+            else if (board[xNew][yNew] !== ''){
+                setPointsWhite(pointsWhite + points[board[xNew][yNew][1]])
+            }
         }
 
         if (counterWhite === counterBlack+1 && id[0] === 'b'){
             setCounterBlack(counterBlack + 1);
             setStepsBlack([...stepsBlack, id[1] + ((board[xNew][yNew] === '') ? '' : 'x') + String.fromCharCode('h'.charCodeAt(0) - yNew) + (xNew+1)]);
+            if (board[xNew][yNew] === 'wk'){
+                alert("Black wins!");
+                window.location.reload(false);
+            }
+            else if (board[xNew][yNew] !== ''){
+                setPointsBlack(pointsBlack + points[board[xNew][yNew][1]])
+            }
         }
 
         console.log(board[xNew][yNew])
