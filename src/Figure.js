@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-function Figure({ figure, startPosition, type, board, setBoard, id, counterWhite, setCounterWhite, counterBlack, setCounterBlack,  stepsWhite, setStepsWhite, stepsBlack, setStepsBlack, pointsWhite, setPointsWhite, pointsBlack, setPointsBlack}){
+function Figure({ figure, startPosition, type, board, setBoard, id, counterWhite, setCounterWhite, counterBlack, setCounterBlack,  stepsWhite, setStepsWhite, stepsBlack, setStepsBlack, pointsWhite, setPointsWhite, pointsBlack, setPointsBlack, boardRef}){
     const [x, setX] = useState(startPosition[0]);
     const [y, setY] = useState(startPosition[1]);
     const [isHidden, setIsHidden] = useState(false);
@@ -61,6 +61,17 @@ function Figure({ figure, startPosition, type, board, setBoard, id, counterWhite
         setBoard(boardNew);
     };
 
+    function getOffset( el ) {
+        var _x = 0;
+        var _y = 0;
+        while( el && !isNaN( el.offsetLeft ) && !isNaN( el.offsetTop ) ) {
+            _x += el.offsetLeft - el.scrollLeft;
+            _y += el.offsetTop - el.scrollTop;
+            el = el.offsetParent;
+        }
+        return { top: _y, left: _x };
+    }
+    
     useEffect(() => {
         let newState = true;
         for (let i = 0; i < board.length; i++) {
@@ -79,10 +90,12 @@ function Figure({ figure, startPosition, type, board, setBoard, id, counterWhite
 
     const handleDragEnd = (event) => {
         const [xPrev, yPrev] = [x, y];
+        console.log(boardRef.current)
         const [xNew, yNew] = [
-            Math.floor(event.clientY / 60),
-            Math.floor(event.clientX / 60)
+            Math.floor((event.clientY-getOffset(boardRef.current).top) / 60),
+            Math.floor((event.clientX-getOffset(boardRef.current).left) / 60)
         ]
+        console.log(xPrev, yPrev, xNew, yNew);
 
         if (xNew < 0 || xNew > 7 || yNew < 0 || yNew > 7) {
             return;
